@@ -48,7 +48,7 @@ La forma que yo creo que deberían traerse las ofertas a este micro es... que el
 
 
 
-Bueno, por último, no pude hacerles un deploy. Lo cual entiendo que es determinante... sin embargo, actualmente no dispongo del tiempo necesario para llevar a cabo esta tarea, y mi conocimiento en Docker no es suficiente para configurar los servicios satélite requeridos.
+Bueno, por último, no pude hacerles un deploy. Lo cual entiendo que es determinante... sin embargo, actualmente no dispongo del tiempo necesario para llevar a cabo esta tarea, y mi conocimiento en Docker no es suficiente para configurar los servicios satélite requeridos, junto con el servicio principal.
 Así que realicé el desarrollo con los test unitarios, y con una explicación amplia como para que puedan ver cómo lo plantié.
 
 

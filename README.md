@@ -1,6 +1,6 @@
 El microservicio se hizo con una arquitectura similar a la hexagonal.
 
-Tiene un dominio, que lo hice sin lógica, solo con las clases de dominio.
+Tiene un dominio, que tiene solo las clases de dominio.
 
 Luego tiene una capa de aplicación, donde están los casos de uso en la clase OfferService.java que son:
 
@@ -13,7 +13,7 @@ Luego tiene una capa de aplicación, donde están los casos de uso en la clase O
 
 Se me podría llegar preguntar por qué no puse esta lógica en el dominio. Podría ir en un service en el dominio, pero como hay mucho orquestado con otros microservicios, preferí ponerlo como parte de la capa de aplicación. En teoría el dominio debería contener sólo lógica, sin llamados hacia las interfaces de la infraestructura. Como vi que hay mucho uso de varios micros cuyos llamados se hacen en la infraestructura lo codié en la capa de aplicación. De todas formas podría ponerse un service en el dominio también.
 
-En varios de los proyectos de mi trabajo, pongo en la capa de aplicación los controllers... y en el dominio hago todo el orquestado de interfaces de infra, pero eso es otro tipo de arquitectura que uso. Esto igual depende mucho de cuál es la forma de trabajar del área, y si se sienten cómodos armando micros de esta forma. La realidad es que solo pude codear el domingo...  en la semana no tengo mucho tiempo para codear por mi trabajo. La versatilidad que me da esta arquitectura que usé... es que si veo que no entendí bien algo, al tener desacoplados los puertos de la lógica principal, puedo modificar la misma con solo cambiar un puerto.
+En varios de los proyectos de mi trabajo, pongo en la capa de aplicación los controllers... y en el dominio hago todo el orquestado de interfaces de infra, esa es otra forma de arquitecturar los desarrollos que uso. Esto igual depende mucho de cuál es la forma de trabajar del área, y si se sienten cómodos armando micros de esta forma. La realidad es que solo pude codear el domingo...  en la semana no tengo mucho tiempo para codear por mi trabajo. La versatilidad que me da esta arquitectura que usé... es que si veo que no entendí bien algo, al tener desacoplados los puertos de la lógica principal, puedo modificar la misma con solo cambiar un puerto.
 
 En la capa de infraestructura se podría decir que hay varios puertos:
 	- puerto de clientes (ClientRepository): Es el microservicio al que estaría pidiendole que valide los datos del cliente.
@@ -37,19 +37,19 @@ Ahora supongamos que ustedes me dicen que me equivoqué y que la idea era espera
 Cada vez que valido el usuario o el método de pago, y el micro destino da error, lo que hice fue guardar en una base de todas formas el pedido de ofertas. Para que un job vuelva a intentar la operación cada media hora, hasta un límite de dos horas.
 
 
-
 Los test unitarios los hice solo para la capa de aplicación. Hice unos test sencillos con estilo de escuela de London que es el más usado en en el área en que trabajo. La idea de este tipo de tests, es testear de forma unitaria cada una de las clases.
 
 
 
 No hice POST, ni PATCH, ni PUT de ofertas porque no tuve tiempo, igual creo que no era la idea del ejercicio. Por lo que entiendo las ofertas deberían poderse cargar con flyway por ejemplo. 
 La forma que yo creo que deberían traerse las ofertas a este micro es... que el micro que hice se suscriba a un tópico de Kafka de donde toma las novedades de ofertas que se van a enviar de otro micro.
-
+Asumo que de las categorías solo tengo que tener el id. El front end debería hacer uso de otro microservicio donde busque los nombres de cada categoría. De esta forma no haría falta que el microservicio que hice guarde en su base de datos los nombres de las categorías, solo tener los ids en las ofertas.
+De todas formas si se quisiera que se valide que la oferta que elige el usuario tenga configurada correctamente una categoría, lo que habría que hacer es consultar si esa categoría existe en el microservicio correspondiente de categorías. Para que cada vez que se realiza esta operación no haya que buscar la info de categorías, lo que se suele hacer es en la misma base del micro de ofertas generar una tabla de categorías, y a esa tabla llenarla con las novedades que haya del microservicio de categorías.
 
 
 
 Bueno, por último, no pude hacerles un deploy. Lo cual entiendo que es determinante... sin embargo, actualmente no dispongo del tiempo necesario para llevar a cabo esta tarea, y mi conocimiento en Docker no es suficiente para configurar los servicios satélite requeridos, junto con el servicio principal.
-Así que realicé el desarrollo con los test unitarios, y con una explicación amplia como para que puedan ver cómo lo plantié.
+Así que realicé el desarrollo con los test unitarios, y con una explicación, que es la que están leyendo, como para que puedan ver cómo lo plantié.
 
 
 
